@@ -142,3 +142,6 @@ exec_always --no-startup-id feh --no-fehbg --bg-scale $background_file
 # Start notification daemon
 exec --no-startup-id dunst
 
+# Start udiskie so USB sticks are reasonable to use
+exec --no-startup-id udiskie
+

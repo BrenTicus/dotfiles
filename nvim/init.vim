@@ -18,4 +18,4 @@ Plug 'airblade/vim-gitgutter'
 Plug 'dag/vim-fish'
 call plug#end()
 
-colorscheme solarized8_dark
+colorscheme solarized8

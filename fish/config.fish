@@ -12,9 +12,17 @@ alias ls="ls --color=auto"
 alias la="ls -a"
 alias ll="ls -l"
 alias vim="nvim"
+alias du="du -sh"
 alias scrot="scrot -d 1 ~/Pictures/Screenshots/screenshot-%Y-%m-%d-%T.png"
 alias startx="startx $XDG_CONFIG_HOME/xorg/Xinitrc"
 
 # Other settings
 set theme_color_scheme solarized-light
 set -g theme_powerline_fonts no
+
+# Start X at login
+if status --is-login
+    if test -z "$DISPLAY" -a $XDG_VTNR = 1
+        exec startx $XDG_CONFIG_HOME/xorg/Xinitrc -keeptty
+    end
+end

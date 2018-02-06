@@ -36,7 +36,7 @@ padding-top = 1
 module-margin-left = 1
 module-margin-right = 0
 
-font-0 = DroidSansMonoSlashed:fontformat=truetype:size=16:antialias=true;0
+font-0 = Droid Sans Mono Slashed for Powerline:fontformat=truetype:size=16:antialias=true;0
 font-1 = Unifont:fontformat=truetype:size=12:antialias=false;0
 font-2 = FontAwesome:fontformat=truetype:size=12:antialias=true;0
 
@@ -134,6 +134,9 @@ type = internal/mpd
 format-online = %{A1:mpc toggle:}<label-song>%{A} <toggle> <icon-next> 
 format-online-underline = #1df760
 
+format-offline = <label-offline>
+format-offline-underline = #1df760
+
 icon-prev = 
 icon-stop = 
 icon-play = 
@@ -143,6 +146,10 @@ icon-next = 
 label-song = %artist% - %title%
 label-song-maxlen = 40
 label-song-ellipsis = true
+label-song-underline = #1df760
+label-song-font = 1
+
+label-offline = "No music :("
 
 [module/xbacklight]
 type = internal/xbacklight
@@ -153,12 +160,12 @@ label = BL
 bar-width = 10
 bar-indicator = |
 bar-indicator-foreground = #ff
-bar-indicator-font = 2
+bar-indicator-font = 1
 bar-fill = ─
-bar-fill-font = 2
+bar-fill-font = 1
 bar-fill-foreground = #9f78e1
 bar-empty = ─
-bar-empty-font = 2
+bar-empty-font = 1
 bar-empty-foreground = ${colors.foreground-alt}
 
 [module/backlight-acpi]
@@ -184,7 +191,7 @@ label = %percentage_used%%
 
 [module/wlan]
 type = internal/network
-interface = wlp58s0
+interface = wlp4s0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
@@ -233,6 +240,7 @@ time-alt = %H:%M
 format-underline = #0a6cf5
 
 label = %date%%time%
+label-font = 1
 
 [module/volume]
 type = internal/volume
@@ -241,6 +249,7 @@ format-volume =  <label-volume>
 format-volume-underline = #ef3f28
 label-volume = %percentage%
 label-volume-foreground = ${root.foreground}
+label-volume-font = 1
 
 format-muted-prefix = 
 format-muted-foreground = ${colors.foreground-alt}
@@ -257,11 +266,11 @@ bar-volume-foreground-5 = #f5a70a
 bar-volume-foreground-6 = #ff5555
 bar-volume-gradient = false
 bar-volume-indicator = |
-bar-volume-indicator-font = 2
+bar-volume-indicator-font = 1
 bar-volume-fill = ─
-bar-volume-fill-font = 2
+bar-volume-fill-font = 1
 bar-volume-empty = ─
-bar-volume-empty-font = 2
+bar-volume-empty-font = 1
 bar-volume-empty-foreground = ${colors.foreground-alt}
 
 [module/battery]
@@ -322,20 +331,27 @@ label-close-foreground = ${colors.foreground-alt}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 
-menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = shutdown
-menu-0-1-exec = menu-open-2
+menu-0-0 = logout
+menu-0-0-exec = menu-open-3
+menu-0-1 = reboot
+menu-0-1-exec = menu-open-1
+menu-0-2 = shutdown
+menu-0-2-exec = menu-open-2
 
 menu-1-0 = cancel
 menu-1-0-exec = menu-open-0
 menu-1-1 = confirm reboot
-menu-1-1-exec = sudo reboot
+menu-1-1-exec = reboot
 
 menu-2-0 = cancel
 menu-2-0-exec = menu-open-0
 menu-2-1 = confirm shutdown
-menu-2-1-exec = sudo poweroff
+menu-2-1-exec = shutdown 0
+
+menu-3-0 = cancel
+menu-3-0-exec = menu-open-0
+menu-3-1 = confirm logout
+menu-3-1-exec = i3-msg exit
 
 [settings]
 screenchange-reload = true
