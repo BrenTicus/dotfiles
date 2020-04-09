@@ -9,9 +9,8 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $background_file ~/Pictures/Backgrounds/ene-smushed.png
-#set $background_file ~/Pictures/Backgrounds/botw-minimalist.png
-set $script_folder $XDG_CONFIG_HOME/scripts
+set $background_file $(( ls ~/Pictures/Backgrounds | shuf | head -1 ))
+set $script_folder /home/brent/.config/script
 
 # Mod4 = super/windows key
 set $mod Mod4 
@@ -25,7 +24,9 @@ new_window none
 
 # Gaps between windows
 gaps inner 20
-smart_gaps on
+# Reserve space at top for polybar
+gaps top 8
+#smart_gaps off
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -40,6 +41,8 @@ bindsym $mod+q kill
 
 # Start rofi (a program launcher)
 bindsym $mod+r exec rofi -show run
+bindsym Mod1+Tab exec rofi -show window
+bindsym $mod+w exec keepmenu
 
 # Change focus
 bindsym $mod+j focus left
@@ -56,16 +59,17 @@ bindsym $mod+Shift+k move down
 bindsym $mod+Shift+i move up
 bindsym $mod+Shift+l move right
 
+# Resize focused window
+bindsym $mod+Ctrl+j resize grow left 10px
+bindsym $mod+Ctrl+k resize grow down 10px
+bindsym $mod+Ctrl+i resize grow up 10px
+bindsym $mod+Ctrl+l resize grow right 10px
+
 # Change whether new windows split vertically or horizontally 
 bindsym $mod+h split h
 bindsym $mod+v split v 
 # Enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
-
-# Change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
 
 # Toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -101,8 +105,8 @@ bindsym XF86AudioMute exec amixer -q set Master 2dB+ toggle
 
 # Brightness buttons
 # xbacklight wasn't working so I just wrote a script to hack the functionality in
-bindsym XF86MonBrightnessUp exec "$script_folder/backlight.sh 50"
-bindsym XF86MonBrightnessDown exec "$script_folder/backlight.sh -50"
+bindsym XF86MonBrightnessUp exec $script_folder/backlight.sh 50
+bindsym XF86MonBrightnessDown exec $script_folder/backlight.sh -50
 
 # Media buttons
 # mpc interacts with the running mpd/mopidy server.
@@ -112,10 +116,10 @@ bindsym XF86AudioPrev exec "mpc prev"
 bindsym XF86AudioStop exec "mpc stop" # I don't even have a stop button, but... meh.
 
 # Printscreen button takes a screenshot
-bindsym Print exec "$script_folder/screenshot.sh"
+bindsym Print exec $script_folder/screenshot.sh
 
 # lock the screen
-bindsym $mod+Mod1+l exec "$script_folder/lock.sh $background_file"
+bindsym $mod+Mod1+l exec $script_folder/lock.sh $background_file
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -123,24 +127,25 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
+# Set screen orientations properly based on available monitors.
+exec_always --no-startup-id $script_folder/changescreen.sh
+
 # Make sure there aren't any other instances of polybar running then start it.
 # We have to make sure this runs every time or else the i3 widget breaks.
-exec_always --no-startup-id "$script_folder/topbar.sh"
-
-# Set screen orientations properly based on available monitors.
-exec_always --no-startup-id "$script_folder/changescreen.sh"
+exec_always --no-startup-id $script_folder/topbar.sh
 
 # Set the DPI to an acceptable value
 exec --no-startup-id xrandr --dpi 220
 
 # Start compositor
-exec --no-startup-id compton -b --config ~/.config/compton.conf
+exec_always --no-startup-id $script_folder/compton-restart.sh
 
 # Set background
 exec_always --no-startup-id feh --no-fehbg --bg-scale $background_file
 
 # Start notification daemon
 exec --no-startup-id dunst
+exec-always notify-send $background_file
 
 # Start udiskie so USB sticks are reasonable to use
 exec --no-startup-id udiskie

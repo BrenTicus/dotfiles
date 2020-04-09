@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file=~/Pictures/Screenshots/screenshot-%Y-%m-%d-%T.png
+file=~/Pictures/Screenshots/screenshot-$(date "+%Y-%m-%d-%H:%M:%S").png
 
-scrot $file
+scrot -s $file
 notify-send "Screenshot saved to $file"

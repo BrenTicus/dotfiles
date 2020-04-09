@@ -2,5 +2,9 @@
 Description=Redshift
 
 [Service]
+Type=simple
 Environment=DISPLAY=:0
-ExecStart=/usr/bin/redshift -l 59.32:113.30
+ExecStart=/usr/bin/redshift
+
+[Install]
+WantedBy=default.target

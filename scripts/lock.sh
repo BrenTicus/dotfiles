@@ -6,6 +6,7 @@ background_name=$(basename "${background_path%.*}")
 cache_dir=$XDG_CACHE_HOME/i3lock
 blurred_path=$cache_dir/blur-$background_name.png
 combinedlock_path=$cache_dir/templock-$background_name.png
+notify-send $background_path
 
 [[ -d $cache_dir ]] || mkdir $cache_dir
 

@@ -9,4 +9,3 @@ elif [ $moncount -eq "2" ];
 then
 	$XDG_CONFIG_HOME/screenlayout/laptop-docked.sh
 fi
-
