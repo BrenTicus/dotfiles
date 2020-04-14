@@ -9,8 +9,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $background_file $(( ls ~/Pictures/Backgrounds | shuf | head -1 ))
-set $script_folder /home/brent/.config/script
+set $script_folder /home/brent/.config/scripts
 
 # Mod4 = super/windows key
 set $mod Mod4 
@@ -119,7 +118,7 @@ bindsym XF86AudioStop exec "mpc stop" # I don't even have a stop button, but... 
 bindsym Print exec $script_folder/screenshot.sh
 
 # lock the screen
-bindsym $mod+Mod1+l exec $script_folder/lock.sh $background_file
+bindsym $mod+Mod1+l exec $script_folder/lock.sh
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -141,11 +140,10 @@ exec --no-startup-id xrandr --dpi 220
 exec_always --no-startup-id $script_folder/compton-restart.sh
 
 # Set background
-exec_always --no-startup-id feh --no-fehbg --bg-scale $background_file
+exec_always --no-startup-id $script_folder/setbackground.sh
 
 # Start notification daemon
 exec --no-startup-id dunst
-exec-always notify-send $background_file
 
 # Start udiskie so USB sticks are reasonable to use
 exec --no-startup-id udiskie
