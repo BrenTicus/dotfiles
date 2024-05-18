@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 WORKSPACES=`hyprctl workspaces | rg -o '[0-9]\)' | sed -e 's/)//'`
 ACTIVE_WORKSPACE=`hyprctl activeworkspace | rg -o '[0-9]\)' | sed -e 's/)//'`
