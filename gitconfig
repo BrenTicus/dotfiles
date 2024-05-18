@@ -1,0 +1,6 @@
+[user]
+	email = brent.glowinski@pm.me
+	name = Brent Glowinski
+
+[alias]
+	ignore = "!echo >> .gitignore"

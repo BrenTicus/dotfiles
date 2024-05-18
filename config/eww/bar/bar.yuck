@@ -1,0 +1,120 @@
+;;;;;;;;;;;;;;;
+;; Variables ;;
+;;;;;;;;;;;;;;;
+(deflisten music :initial ""
+  "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+
+(defpoll time :interval "10s"
+  "date '+%H:%M'")
+
+(defpoll volume :interval "1s"
+  "wpctl get-volume @DEFAULT_AUDIO_SINK@" )
+
+(defvar power false)
+(defvar workspace_1_class "workspace-active")
+(defvar workspace_2_class "workspace-inactive")
+(defvar workspace_3_class "workspace-inactive")
+(defvar workspace_4_class "workspace-inactive")
+(defvar workspace_5_class "workspace-inactive")
+(defvar workspace_6_class "workspace-inactive")
+
+;;;;;;;;;;;;;
+;; Widgets ;;
+;;;;;;;;;;;;;
+(defwidget workspaces []
+  (box :class "workspaces"
+       :orientation "h"
+       :space-evenly true
+       :halign "start"
+       :spacing 10
+    (button :class workspace_1_class :onclick "hyprctl dispatch workspace 1 && scripts/workspaces.sh" 1)
+    (button :class workspace_2_class :onclick "hyprctl dispatch workspace 2 && scripts/workspaces.sh" 2)
+    (button :class workspace_3_class :onclick "hyprctl dispatch workspace 3 && scripts/workspaces.sh" 3)
+    (button :class workspace_4_class :onclick "hyprctl dispatch workspace 4 && scripts/workspaces.sh" 4)
+    (button :class workspace_5_class :onclick "hyprctl dispatch workspace 5 && scripts/workspaces.sh" 5)
+    (button :class workspace_6_class :onclick "hyprctl dispatch workspace 6 && scripts/workspaces.sh" 6)
+  ))
+
+(defwidget music []
+  (box :class "music"
+       :orientation "h"
+       :space-evenly false
+       :halign "center"
+    {music != "" ? "🎵${music}" : ""}))
+
+(defwidget power []
+	(eventbox	:onhover "eww update power=true"
+				:onhoverlost "eww update power=false"
+	(box		:orientation "v"
+				:space-evenly "false"
+				:vexpand "false"
+				:class "powermenu"
+	(revealer	:transition "slideup"
+				:reveal power
+				:duration "550ms"
+	(box		:orientation "v"
+				:space-evenly "false"
+
+  	(button		:class "button-reb"
+	  			:tooltip "Reboot"
+				:onclick "reboot"	"")
+
+	(button		:class "button-quit"
+				:tooltip "Logout"
+				:onclick "killall hyprland" "")
+
+	(button		:class "button-off"
+				:tooltip "Shutdown"
+				:onclick "shutdown now"	""))))))
+
+(defwidget left []
+  (box :class "left-widgets"
+       :orientation "h"
+       :space-evenly true
+       :halign "start"
+  (workspaces)))
+
+(defwidget middle []
+  (box :class "middle-widgets"
+       :orientation "h"
+       :space-evenly true
+       :halign "center"
+    (music)
+    time
+    volume))
+
+(defwidget right []
+  (box :class "right-widgets"
+       :orientation "h"
+       :space-evenly false
+       :halign "end"
+  (power)))
+
+;; Bar Widgets ;;
+(defwidget bar []
+	(box :class "eww_bar"
+		 :orientation "h"
+		 :vexpand "false"
+		 :hexpand "false"
+(left)
+(middle)
+(right)))
+
+
+
+(defwindow bar
+  :monitor 0
+  :focusable "false"
+  :exclusive "true"
+  :stacking "fg"
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :height "30px"
+                      :width "100%"
+                      :anchor "top center"
+                      :reserve (struts :distance "35px"
+					:side "left")
+                      :wm-ignore false
+                      :hexpand "false"
+                      :vexpand "false")
+  (bar))
